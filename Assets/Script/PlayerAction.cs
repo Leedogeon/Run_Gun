@@ -9,6 +9,8 @@ public class PlayerAction : MonoBehaviour
     private float MoveForward;
     private float MoveRight;
     public float speed = 5f;
+
+    public Vector2 turn;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +23,7 @@ public class PlayerAction : MonoBehaviour
     {
         GetInput();
         Move();
+        Turn();
     }
 
     void GetInput()
@@ -37,4 +40,14 @@ public class PlayerAction : MonoBehaviour
         transform.Translate(Vector3.forward * MoveForward * Time.deltaTime * speed);
         transform.Translate(Vector3.right * MoveRight * Time.deltaTime * speed);
     }
+    void Turn()
+    {
+
+        turn.x += Input.GetAxisRaw("Mouse X");
+        turn.y += Input.GetAxisRaw("Mouse Y");
+        //turn.y = Mathf.Clamp(turn.y, -30, MaxY);
+
+        transform.localRotation = Quaternion.Euler(0, turn.x, 0);
+    }
+
 }
