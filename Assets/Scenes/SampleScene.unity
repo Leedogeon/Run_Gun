@@ -1287,6 +1287,7 @@ MonoBehaviour:
   Player: {fileID: 1323592257}
   Ground:
   - {fileID: 1703089334436318781, guid: 035b22cee8cfd1f4d8ed9e779a31f9d0, type: 3}
+  DestroyLinePrefab: {fileID: 718940763822243299, guid: 4bbe2aadca7d1684baf729af7d4b0d35, type: 3}
 --- !u!4 &1319258444
 Transform:
   m_ObjectHideFlags: 0

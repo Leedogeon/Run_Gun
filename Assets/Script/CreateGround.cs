@@ -14,15 +14,31 @@ public class CreateGround : MonoBehaviour
     public List<GameObject> Ground = new List<GameObject>();
     private float MaxGorund = 0;
 
+
+    public GameObject DestroyLinePrefab;
+    private GameObject DestroyLine;
+    public List<string> Tags = new List<string>();
     private void Start()
     {
+        //DestoryLine = Resources.Load<GameObject>("Assets/Resources/Prefabs/DestroyLine.prefab");
+        DestroyLine = Instantiate(DestroyLinePrefab, new Vector3(0,0,0), Quaternion.identity);
+        Tags.Add("Floor");
+        if (DestroyLine == null )
+        {
+            Debug.LogError("DestoryLine is Null");
+        }
         GameObject StartBase = Ground[0];
         NewGround();
+
     }
     // Update is called once per frame
     void Update()
     {
-        if(Player.position.z > NextZ*SpawnCount)
+        Vector3 DestroyVec = DestroyLine.transform.position;
+        DestroyVec.z = Player.position.z - 100f;
+        DestroyLine.transform.position = DestroyVec;
+
+        if (Player.position.z > NextZ*SpawnCount)
         {
             SpawnCount++;
             GameObject StartBase = Ground[0];
