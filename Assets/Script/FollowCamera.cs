@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class FollowCamera : MonoBehaviour
 {
-    public Initialize PlayerPrefab;
     public Transform Target;
     public Vector3 offset;
 
     void Start()
     {
-        PlayerPrefab = FindObjectOfType<Initialize>();
-        Target = PlayerPrefab.PlayerInstance.transform;
+        GameObject PlayerInstance = Initialize.Instance.GetPlayerInstance();
+        Target = PlayerInstance.transform;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

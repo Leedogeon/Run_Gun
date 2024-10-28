@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 public class CreateGround : MonoBehaviour
 {
-    public Initialize PlayerPrefab;
+    //public Initialize PlayerPrefab;
     public Transform Player;
 
     private float NextZ = 50f;
@@ -19,13 +19,10 @@ public class CreateGround : MonoBehaviour
     private GameObject DestroyLine;
     public List<string> Tags = new List<string>();
     private void Start()
-    {   
-        PlayerPrefab = FindObjectOfType<Initialize>();
-        if (PlayerPrefab != null && PlayerPrefab.PlayerInstance !=null)
-        {
-            Debug.Log("생성 성공");
-        }
-        Player = PlayerPrefab.PlayerInstance.transform;
+    {
+        GameObject PlayerInstance = Initialize.Instance.GetPlayerInstance();
+
+        Player = PlayerInstance.transform;
         //DestoryLine = Resources.Load<GameObject>("Assets/Resources/Prefabs/DestroyLine.prefab");
         DestroyLine = Instantiate(DestroyLinePrefab, new Vector3(0,0,0), Quaternion.identity);
         Tags.Add("Floor");

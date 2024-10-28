@@ -5,15 +5,11 @@ using UnityEngine;
 
 public class CinemCustomCinemachineachine : MonoBehaviour
 {
-    private Initialize PlayerPrefab;
-    public GameObject PlayerInstance;
     public CinemachineFreeLook freeLookCamera;
 
     void Start()
     {
-        PlayerPrefab = FindObjectOfType<Initialize>();
-        if(PlayerPrefab != null)
-            PlayerInstance = PlayerPrefab.PlayerInstance;
+        GameObject PlayerInstance = Initialize.Instance.GetPlayerInstance();
         freeLookCamera = GetComponent<CinemachineFreeLook>();
 
         if (PlayerInstance != null)

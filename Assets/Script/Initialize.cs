@@ -4,16 +4,33 @@ using UnityEngine;
 
 public class Initialize : MonoBehaviour
 {
-    public GameObject Player;
-    public GameObject PlayerInstance;
-    // Start is called before the first frame update
+    public static Initialize Instance { get; private set; }
+    public GameObject PlayerInstance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+
+    public void SetPlayerInstance(GameObject player)
+    {
+        PlayerInstance = player; // 플레이어 인스턴스 설정
+    }
+
+    public GameObject GetPlayerInstance()
+    {
+        return PlayerInstance; // 플레이어 인스턴스 반환
+    }
     void Start()
     {
-        Player = Resources.Load<GameObject>("Prefabs/unitychan");
-        if (Player != null)
+        GameObject PlayerPrefab = Resources.Load<GameObject>("Prefabs/unitychan");
+        if (PlayerPrefab != null)
         {
-            PlayerInstance = Instantiate(Player, new Vector3(0, 1, 0), Quaternion.identity);
-        
+            PlayerInstance = Instantiate(PlayerPrefab, new Vector3(0, 1, 0), Quaternion.identity);
+
         }
     }
 
