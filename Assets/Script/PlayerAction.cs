@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerAction : MonoBehaviour
 {
@@ -18,11 +19,6 @@ public class PlayerAction : MonoBehaviour
     public Vector2 turn;
 
 
-
-
-
-
-
     public float jumpForce = 5f; // 점프 힘
     public float jumpDistance = 3f; // X축으로 이동할 거리
     public float jumpDuration = 1f; // 점프하는 데 걸리는 시간
@@ -33,16 +29,26 @@ public class PlayerAction : MonoBehaviour
     private bool GoSide;
 
 
+    private bool Is3D;
+    
     // Start is called before the first frame update
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        string curScene = SceneManager.GetActiveScene().name;
+        if (curScene == "3DScene")
+            Is3D = true;
+        else Is3D = false;
+
+            print("3D?" + Is3D);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         GetInput();
         Move();
         //Jump();
@@ -62,8 +68,8 @@ public class PlayerAction : MonoBehaviour
 
     void GetInput()
     {
-        MoveRight = Input.GetAxis("Horizontal");
-        MoveForward = Input.GetAxis("Vertical");
+        MoveRight = Is3D ? Input.GetAxis("Horizontal") : Input.GetAxis("Vertical")*-1;
+        MoveForward = Is3D ? Input.GetAxis("Vertical") : Input.GetAxis("Horizontal");
         anim.SetFloat("Speed", MoveForward);
         anim.speed = speed*.3f;
         jDown = Input.GetButtonDown("Jump");
