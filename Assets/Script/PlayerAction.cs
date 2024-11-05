@@ -28,6 +28,8 @@ public class PlayerAction : MonoBehaviour
     private Vector3 targetPosition; // 점프 목표 위치
     private bool GoSide;
 
+    private Transform Drone;
+    private GameObject Bullet;
 
     private bool Is3D;
     
@@ -36,15 +38,18 @@ public class PlayerAction : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        ViewPoint();
 
+        Drone = transform.Find("Drone");
+        Bullet = Resources.Load<GameObject>("Prefabs/Bullet");
+    }
+    void ViewPoint()
+    {
         string curScene = SceneManager.GetActiveScene().name;
         if (curScene == "3DScene")
             Is3D = true;
         else Is3D = false;
-
-            print("3D?" + Is3D);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -62,6 +67,11 @@ public class PlayerAction : MonoBehaviour
         if (isJumping && GoSide)
         {
             UpdateJump();
+        }
+
+        if(Input.GetButtonDown("Fire"))
+        {
+            Attack();
         }
 
     }
@@ -119,6 +129,16 @@ public class PlayerAction : MonoBehaviour
         newPosition.z = transform.position.z + (MoveForward * Time.deltaTime * speed *.1f);
 
         transform.position = newPosition; // 위치 업데이트
+    }
+
+
+    void Attack()
+    {
+        GameObject NewBullet = Instantiate(Bullet, Drone.transform.position, Bullet.transform.rotation);
+        Rigidbody BulletRigid = NewBullet.GetComponent<Rigidbody>();
+
+        BulletRigid.AddForce(Vector3.forward*1000f,ForceMode.Acceleration);
+
     }
 
     void OnCollisionEnter(Collision collision)
