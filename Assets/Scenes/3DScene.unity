@@ -275,8 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d688c8befab3dcd45878e39f52a85033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 0}
-  PlayerInstance: {fileID: 0}
+  freeLookCamera: {fileID: 0}
 --- !u!1001 &283276177
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -819,7 +818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2de4263c014e6b34591c43bd03ac965b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 0}
   Target: {fileID: 0}
   offset: {x: 0, y: 3, z: -3}
 --- !u!114 &963194230
@@ -1139,7 +1137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b193637b22d3e74ca21f8908deec923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 0}
   Player: {fileID: 0}
   Ground:
   - {fileID: 1703089334436318781, guid: 035b22cee8cfd1f4d8ed9e779a31f9d0, type: 3}

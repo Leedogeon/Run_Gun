@@ -14,6 +14,10 @@ public class CreateGround : MonoBehaviour
     private float SpawnCount = 0f;
     public List<GameObject> Ground = new List<GameObject>();
 
+    GameObject EnemyInstance;
+    private float SpawnCoolDown = 2f;
+    private int[] SpawnX = { -3, 0, 3 };
+
 
     public GameObject DestroyLinePrefab;
     private GameObject DestroyLine;
@@ -21,7 +25,7 @@ public class CreateGround : MonoBehaviour
     private void Start()
     {
         GameObject PlayerInstance = Initialize.Instance.GetPlayerInstance();
-
+        EnemyInstance = Resources.Load<GameObject>("Prefabs/Enemy");
         Player = PlayerInstance.transform;
         //DestoryLine = Resources.Load<GameObject>("Assets/Resources/Prefabs/DestroyLine.prefab");
         DestroyLine = Instantiate(DestroyLinePrefab, new Vector3(0,0,0), Quaternion.identity);
@@ -33,20 +37,40 @@ public class CreateGround : MonoBehaviour
         GameObject StartBase = Ground[0];
         NewGround();
 
+
+        InvokeRepeating("SpawnEnemy", 0f, 2f);
     }
     // Update is called once per frame
     void Update()
+    {
+        SpawnGround();
+        
+
+    }
+
+    void SpawnGround()
     {
         Vector3 DestroyVec = DestroyLine.transform.position;
         DestroyVec.z = Player.position.z - 100f;
         DestroyLine.transform.position = DestroyVec;
 
-        if (Player.position.z > NextZ*SpawnCount)
+        if (Player.position.z > NextZ * SpawnCount)
         {
             SpawnCount++;
             GameObject StartBase = Ground[0];
             NewGround();
         }
+    }
+    void SpawnEnemy()
+    {
+        Instantiate(EnemyInstance, new Vector3(SelectEnemyX(), 2, Player.position.z + 50), Quaternion.identity);
+    }
+    int SelectEnemyX()
+    {
+        System.Random random = new System.Random();
+        int randomIndex = random.Next(0, SpawnX.Length);
+        int randomValue = SpawnX[randomIndex];
+        return randomValue;
     }
 
     GameObject SelectGround()
