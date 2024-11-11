@@ -36,6 +36,7 @@ public class PlayerAction : MonoBehaviour
     public Vector3 boxSize = new Vector3(1, 4, 1); // Y축을 넓힌 탐지 박스의 크기
     private LayerMask targetLayer;            // 탐지할 레이어 (적이 있는 레이어)
 
+    private bool CanAttack = false;
 
     private bool Is3D;
     
@@ -76,18 +77,19 @@ public class PlayerAction : MonoBehaviour
             UpdateJump();
         }
 
-        if(Input.GetButtonDown("Fire"))
+        if(CanAttack && Input.GetButtonDown("Fire"))
         {
             Attack();
+            
         }
-
-
-
 
         if (Physics.BoxCast(transform.position, boxSize/2, transform.forward, out RaycastHit hit, transform.rotation, detectionRange, targetLayer))
         {
             Target = hit.collider.gameObject;
+            CanAttack = true;
         }
+        else
+            CanAttack = false;
     }
 
     void GetInput()
@@ -149,11 +151,10 @@ public class PlayerAction : MonoBehaviour
 
     void Attack()
     {
-
-
         GameObject NewBullet = Instantiate(Bullet, Drone.transform.position, Bullet.transform.rotation);
-        Bullet BulletScript = NewBullet.GetComponent<Bullet>();
+        PlayerBullet BulletScript = NewBullet.GetComponent<PlayerBullet>();
         BulletScript.Target = Target;
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -174,10 +175,10 @@ public class PlayerAction : MonoBehaviour
             isGrounded = false;
         }
     }
-    void OnDrawGizmos()
+/*    void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.matrix = Matrix4x4.TRS(transform.position + transform.forward * detectionRange / 2, transform.rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(boxSize.x, boxSize.y, detectionRange));
-    }
+    }*/
 }
