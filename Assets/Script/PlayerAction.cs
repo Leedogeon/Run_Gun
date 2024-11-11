@@ -31,6 +31,12 @@ public class PlayerAction : MonoBehaviour
     private Transform Drone;
     private GameObject Bullet;
 
+    public GameObject Target;
+    public float detectionRange = 20f;       // 탐지 거리
+    public Vector3 boxSize = new Vector3(1, 4, 1); // Y축을 넓힌 탐지 박스의 크기
+    private LayerMask targetLayer;            // 탐지할 레이어 (적이 있는 레이어)
+
+
     private bool Is3D;
     
     // Start is called before the first frame update
@@ -40,6 +46,7 @@ public class PlayerAction : MonoBehaviour
         anim = GetComponent<Animator>();
         ViewPoint();
 
+        targetLayer = LayerMask.GetMask("Enemy");
         Drone = transform.Find("Drone");
         Bullet = Resources.Load<GameObject>("Prefabs/Bullet");
     }
@@ -74,11 +81,19 @@ public class PlayerAction : MonoBehaviour
             Attack();
         }
 
+
+
+
+        if (Physics.BoxCast(transform.position, boxSize/2, transform.forward, out RaycastHit hit, transform.rotation, detectionRange, targetLayer))
+        {
+            Target = hit.collider.gameObject;
+        }
     }
 
     void GetInput()
     {
-        MoveRight = Is3D ? Input.GetAxis("Horizontal") : Input.GetAxis("Vertical")*-1;
+        /*MoveRight = Is3D ? Input.GetAxis("Horizontal") : Input.GetAxis("Vertical")*-1;*/
+        MoveRight = Is3D ? Input.GetAxis("Horizontal") : 0;
         MoveForward = Is3D ? Input.GetAxis("Vertical") : Input.GetAxis("Horizontal");
         anim.SetFloat("Speed", MoveForward);
         anim.speed = speed*.3f;
@@ -134,11 +149,11 @@ public class PlayerAction : MonoBehaviour
 
     void Attack()
     {
+
+
         GameObject NewBullet = Instantiate(Bullet, Drone.transform.position, Bullet.transform.rotation);
-        Rigidbody BulletRigid = NewBullet.GetComponent<Rigidbody>();
-
-        BulletRigid.AddForce(Vector3.forward*1000f,ForceMode.Acceleration);
-
+        Bullet BulletScript = NewBullet.GetComponent<Bullet>();
+        BulletScript.Target = Target;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -159,5 +174,10 @@ public class PlayerAction : MonoBehaviour
             isGrounded = false;
         }
     }
-
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.matrix = Matrix4x4.TRS(transform.position + transform.forward * detectionRange / 2, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(boxSize.x, boxSize.y, detectionRange));
+    }
 }
