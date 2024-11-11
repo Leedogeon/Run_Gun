@@ -11,12 +11,17 @@ public class Enemy : MonoBehaviour
     private bool chasing;
     private float distanceZ;
 
+    private Renderer Color;
     private void Start()
     {
         GameObject PlayerInstance = Initialize.Instance.GetPlayerInstance();
         Target = PlayerInstance.transform;
         chasing = false;
-        if (Target == null) print("test");
+        Color = GetComponent<Renderer>();
+
+        Color randomColor = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+
+        Color.material.color = randomColor;
     }
     private void Update()
     {
@@ -42,14 +47,6 @@ public class Enemy : MonoBehaviour
                 newPosition.z = Target.position.z + 10;
                 transform.position = newPosition;
             }
-            
-
-
         }
-
-
-        
-
-
     }
 }
