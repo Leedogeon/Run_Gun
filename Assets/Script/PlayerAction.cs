@@ -152,6 +152,7 @@ public class PlayerAction : MonoBehaviour
     void Attack()
     {
         GameObject NewBullet = Instantiate(Bullet, Drone.transform.position, Bullet.transform.rotation);
+        NewBullet.AddComponent<PlayerBullet>();
         PlayerBullet BulletScript = NewBullet.GetComponent<PlayerBullet>();
         BulletScript.Target = Target;
 

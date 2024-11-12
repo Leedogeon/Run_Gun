@@ -10,6 +10,7 @@ public abstract class Bullet : MonoBehaviour
     protected float StartX;
     protected Rigidbody BulletRigid;
     protected bool HasHit = false;
+    public Vector3 HitPoint;
     public abstract void Move();
     public abstract void OnHit(Collider other);
 
@@ -34,7 +35,7 @@ public abstract class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (!HasHit&& other.tag == "Enemy")
+        if (!HasHit && (other.tag == "Enemy" || other.tag == "Player"))
         {
             HasHit = true;
             Debug.Log("타겟과 트리거 충돌 발생!");
