@@ -9,9 +9,9 @@ public abstract class Bullet : MonoBehaviour
     protected Transform Player;
     protected float StartX;
     protected Rigidbody BulletRigid;
-
+    protected bool HasHit = false;
     public abstract void Move();
-    public abstract void OnHit();
+    public abstract void OnHit(Collider other);
 
     void Start()
     {
@@ -34,10 +34,11 @@ public abstract class Bullet : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == Target)
+        if (!HasHit&& other.tag == "Enemy")
         {
+            HasHit = true;
             Debug.Log("타겟과 트리거 충돌 발생!");
-            OnHit();
+            OnHit(other);
         }
     }
 }
